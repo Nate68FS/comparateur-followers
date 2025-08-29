@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Comparateur Followers Instagram</title>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
+      color: #333;
+      transition: background 0.3s, color 0.3s;
+      display: flex;
+      justify-content: center;
+    }
+    body.dark {
+      background: #121212;
+      color: #f5f5f5;
+    }
+    .page {
+      display: flex;
+      max-width: 1400px;
+      width: 100%;
+    }
+    .ad {
+      width: 160px;
+      background: #f4f4f4;
+      text-align: center;
+      padding: 10px;
+      font-size: 0.9rem;
+      color: #666;
+      border: 1px dashed #ccc;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      writing-mode: vertical-rl;
+      text-orientation: mixed;
+    }
+    @media (max-width: 1024px) {
+      .ad {
+        display: none; /* Cache les pubs latérales sur mobile/tablette */
+      }
+    }
+    main {
+      flex: 1;
+      padding: 0 20px;
+      position: relative;
+    }
+    /* Bannière mobile en bas */
+    .ad-bottom {
+      display: none;
+    }
+    @media (max-width: 1024px) {
+      .ad-bottom {
+        display: flex;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 60px;
+        background: #f4f4f4;
+        color: #666;
+        border-top: 1px dashed #ccc;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.9rem;
+        z-index: 1000;
+      }
+    }
+    header {
+      text-align: center;
+      padding: 30px 20px 10px;
+      background: linear-gradient(90deg, #833ab4, #fd1d1d, #fcb045);
+      color: white;
+      border-radius: 0 0 20px 20px;
+    }
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 10px;
+    }
+    p.subtitle {
+      font-size: 1rem;
+      opacity: 0.9;
+    }
+    .container {
+      display: grid;
+      gap: 20px;
+      padding: 20px;
+      max-width: 1000px;
+      margin: auto;
+    }
+    textarea {
+      width: 100%;
+      height: 120px;
+      border-radius: 12px;
+      border: 1px solid #ccc;
+      padding: 10px;
+      resize: none;
+      transition: 0.3s;
+    }
+    textarea:focus {
+      outline: none;
+      border-color: #833ab4;
+      box-shadow: 0 0 8px rgba(131,58,180,0.4);
+    }
+    .actions {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    button.action {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 20px;
+      background: linear-gradient(90deg, #833ab4, #fd1d1d, #fcb045);
+      color: #fff;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+    button.action:hover {
+      transform: scale(1.05);
+    }
+    .results {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      margin-top: 20px;
+    }
+    .card {
+      padding: 15px;
+      border-radius: 12px;
+      background: white;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      transition: 0.3s;
+    }
+    body.dark .card {
+      background: #1e1e1e;
+    }
+    .card h3 {
+      margin-bottom: 10px;
+    }
+    .card ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .card li {
+      padding: 5px 0;
+      border-bottom: 1px solid #eee;
+    }
+    footer {
+      margin-top: 40px;
+      padding: 20px;
+      text-align: center;
+      font-size: 0.9rem;
+      opacity: 0.8;
+    }
+    .dark-mode-toggle {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      cursor: pointer;
+      font-size: 1.2rem;
+      background: #fff;
+      border-radius: 12px;
+      padding: 5px 10px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+    select {
+      padding: 8px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      margin-top: 10px;
+    }
+  </style>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/docx/8.2.2/docx.min.js"></script>
+</head>
+<body>
+  <div class="page">
+    <div class="ad">Espace Publicitaire</div>
+
+    <main>
+      <div class="dark-mode-toggle" onclick="toggleDarkMode()">Mode 🌙</div>
+      <header>
+        <h1>Comparateur Followers Instagram</h1>
+        <p class="subtitle">Colle tes listes de suivis et d'abonnés pour savoir qui te suit, qui t'a unfollow ou qui n'est pas suivi en retour 🚀</p>
+      </header>
+      <div class="container">
+        <textarea id="following" placeholder="Colle ici la liste des comptes que tu suis..."></textarea>
+        <textarea id="followers" placeholder="Colle ici la liste de tes abonnés..."></textarea>
+        <div class="actions">
+          <button class="action" onclick="compare()">🔍 Comparer</button>
+          <button class="action" onclick="saveSnapshot()">💾 Sauvegarder Snapshot</button>
+          <button class="action" onclick="exportWord()">📄 Exporter en Word</button>
+        </div>
+
+        <div>
+          <h2>📅 Historique des Snapshots</h2>
+          <select id="snapshotSelect" onchange="loadSnapshot()">
+            <option disabled selected>-- Choisis un snapshot --</option>
+          </select>
+        </div>
+
+        <div class="results">
+          <div class="card">
+            <h3>❌ Ceux qui ne te suivent pas en retour</h3>
+            <ul id="notFollowingBack"></ul>
+          </div>
+          <div class="card">
+            <h3>➕ Ceux que tu ne suis pas</h3>
+            <ul id="youDontFollowBack"></ul>
+          </div>
+          <div class="card">
+            <h3>✅ Followbacks</h3>
+            <ul id="mutual"></ul>
+          </div>
+        </div>
+      </div>
+
+      <footer>
+        <p>© 2025 Comparateur Followers Instagram | Créé pour suivre facilement tes abonnés 📊</p>
+        <p><strong>À propos de cet outil :</strong> Ce site gratuit te permet de comparer ta liste de suivis et d'abonnés Instagram pour savoir :
+          <br>- Qui ne te suit pas en retour ❌
+          <br>- Qui tu n'as pas suivi ➕
+          <br>- Tes followbacks mutuels ✅
+          <br>Tu peux aussi sauvegarder des snapshots dans le temps et suivre l’évolution de ton compte Instagram facilement.</p>
+      </footer>
+
+      <!-- Bannière mobile en bas -->
+      <div class="ad-bottom">Espace Publicitaire Mobile</div>
+    </main>
+
+    <div class="ad">Espace Publicitaire</div>
+  </div>
+
+  <script>
+    function toggleDarkMode() {
+      document.body.classList.toggle("dark");
+    }
+
+    function compare() {
+      const following = document.getElementById("following").value.split(/\n|,/).map(s => s.trim()).filter(Boolean);
+      const followers = document.getElementById("followers").value.split(/\n|,/).map(s => s.trim()).filter(Boolean);
+
+      const notFollowingBack = following.filter(u => !followers.includes(u));
+      const youDontFollowBack = followers.filter(u => !following.includes(u));
+      const mutual = followers.filter(u => following.includes(u));
+
+      fillList("notFollowingBack", notFollowingBack);
+      fillList("youDontFollowBack", youDontFollowBack);
+      fillList("mutual", mutual);
+    }
+
+    function fillList(id, items) {
+      const ul = document.getElementById(id);
+      ul.innerHTML = items.map(u => `<li>${u}</li>`).join("");
+    }
+
+    function saveSnapshot() {
+      const following = document.getElementById("following").value.split(/\n|,/).map(s => s.trim()).filter(Boolean);
+      const followers = document.getElementById("followers").value.split(/\n|,/).map(s => s.trim()).filter(Boolean);
+
+      const snapshot = {
+        date: new Date().toLocaleString(),
+        following,
+        followers
+      };
+      let history = JSON.parse(localStorage.getItem("snapshots") || "[]");
+      history.push(snapshot);
+      localStorage.setItem("snapshots", JSON.stringify(history));
+      updateSnapshotSelect();
+    }
+
+    function updateSnapshotSelect() {
+      const history = JSON.parse(localStorage.getItem("snapshots") || "[]");
+      const select = document.getElementById("snapshotSelect");
+      select.innerHTML = '<option disabled selected>-- Choisis un snapshot --</option>';
+      history.forEach((snap, index) => {
+        select.innerHTML += `<option value="${index}">${snap.date} - ${snap.following.length} suivis / ${snap.followers.length} abonnés</option>`;
+      });
+    }
+
+    function loadSnapshot() {
+      const index = document.getElementById("snapshotSelect").value;
+      const history = JSON.parse(localStorage.getItem("snapshots") || "[]");
+      if (history[index]) {
+        document.getElementById("following").value = history[index].following.join("\n");
+        document.getElementById("followers").value = history[index].followers.join("\n");
+        compare();
+      }
+    }
+
+    async function exportWord() {
+      const { Document, Packer, Paragraph, TextRun } = window.docx;
+
+      let doc = new Document({
+        sections: [{
+          properties: {},
+          children: [
+            new Paragraph({ children: [new TextRun({ text: "Snapshot Followers Instagram", bold: true, size: 28 })] }),
+            new Paragraph("")
+          ],
+        }],
+      });
+
+      function addSection(title, list) {
+        doc.addSection({
+          children: [
+            new Paragraph({ children: [new TextRun({ text: title, bold: true, size: 24 })] }),
+            ...list.map(item => new Paragraph("• " + item)),
+            new Paragraph("")
+          ],
+        });
+      }
+
+      const notFollowingBack = Array.from(document.querySelectorAll("#notFollowingBack li")).map(li => li.textContent);
+      const youDontFollowBack = Array.from(document.querySelectorAll("#youDontFollowBack li")).map(li => li.textContent);
+      const mutual = Array.from(document.querySelectorAll("#mutual li")).map(li => li.textContent);
+
+      addSection("❌ Ceux qui ne te suivent pas en retour", notFollowingBack);
+      addSection("➕ Ceux que tu ne suis pas", youDontFollowBack);
+      addSection("✅ Followbacks", mutual);
+
+      const blob = await Packer.toBlob(doc);
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = "snapshot_instagram.docx";
+      link.click();
+    }
+
+    window.onload = updateSnapshotSelect;
+  </script>
+</body>
+</html>
