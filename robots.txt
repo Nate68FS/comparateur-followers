@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://nate68fs.github.io/comparateur-followers/sitemap.xml
